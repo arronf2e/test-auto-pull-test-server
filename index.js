@@ -12,8 +12,8 @@ const exec = require('child_process').exec;
 
 const _exec = sysName => {
 	return new Promise((resolve, reject) => {
-		exec('git checkout test', {cwd: path.resolve('d:/projects/' + sysName)}, (err, stdout, stderr) => {
-			exec('git pull origin test', {cwd: path.resolve('d:/projects/' + sysName)}, (error, stdout, stderr) => {
+		exec('git checkout test', {cwd: path.resolve('d:/web/' + sysName)}, (err, stdout, stderr) => {
+			exec('git pull origin test', {cwd: path.resolve('d:/web/' + sysName)}, (error, stdout, stderr) => {
 				if(error) {
 					reject(error);
 				}

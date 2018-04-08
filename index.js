@@ -9,12 +9,12 @@ const router = new Router();
 // 使用child_process来执行shell命令
 const exec = require('child_process').exec;
 
-const _exec = cmd => {
+const _exec = sysName => {
 	return new Promise((resolve, reject) => {
-		exec('git pull', {cwd: '../event'}, (err, stdout, stderr) => {
-			exec(cmd, {cwd: '../event'}, (error, stdout, stderr) => {
-				if(err) {
-					reject(err);
+		exec('git checkout test', {cwd: '../projects/' + sysName}, (err, stdout, stderr) => {
+			exec('git pull origin test', {cwd: '../projects/' + sysName}, (error, stdout, stderr) => {
+				if(error) {
+					reject(error);
 				}
 				// let data = '';
 				// const readableStream = fs.createReadStream('git.log');
@@ -37,8 +37,7 @@ router.get('/', (ctx, next) => {
 
 router.get('/autopull/:sys', async(ctx, next) => {
 	let sysName = ctx.params.sys;
-	let cmd = 'cd d:/projects/' + sysName;
-	let data = await _exec(cmd);
+	let data = await _exec(sysName);
 	ctx.body = data;
 })
 

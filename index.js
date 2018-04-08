@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 
 const Koa = require('koa');
 const Router = require('koa-router');
@@ -11,20 +12,11 @@ const exec = require('child_process').exec;
 
 const _exec = sysName => {
 	return new Promise((resolve, reject) => {
-		exec('git checkout test', {cwd: '../projects/' + sysName}, (err, stdout, stderr) => {
-			exec('git pull origin test', {cwd: '../projects/' + sysName}, (error, stdout, stderr) => {
+		exec('git checkout test', {cwd: path.resolve('d:/projects/' + sysName)}, (err, stdout, stderr) => {
+			exec('git pull origin test', {cwd: path.resolve('d:/projects/' + sysName)}, (error, stdout, stderr) => {
 				if(error) {
 					reject(error);
 				}
-				// let data = '';
-				// const readableStream = fs.createReadStream('git.log');
-				// readableStream.setEncoding('utf8');
-				// readableStream.on('data', chunk => {
-				// 	data += chunk;
-				// })
-				// readableStream.on('end', () => {
-				// 	resolve(data);
-				// })
 				resolve('success')
 			})
 		})

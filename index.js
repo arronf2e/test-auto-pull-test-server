@@ -10,14 +10,14 @@ const router = new Router();
 // 使用child_process来执行shell命令
 const exec = require('child_process').exec;
 
-const _exec = sysName => {
+const _exec = (diskName, folderName, sysName) => {
 	return new Promise((resolve, reject) => {
-		exec('git checkout test', {cwd: path.resolve('d:/web/' + sysName)}, (err, stdout, stderr) => {
-			exec('git pull origin test', {cwd: path.resolve('d:/web/' + sysName)}, (error, stdout, stderr) => {
+		exec('git checkout test', {cwd: path.resolve(diskName + ':/' + folderName + '/' + sysName)}, (err, stdout, stderr) => {
+			exec('git pull origin test', {cwd: path.resolve(diskName + ':/' + folderName + '/' + sysName)}, (error, stdout, stderr) => {
 				if(error) {
 					reject(error);
 				}
-				resolve('success')
+				resolve(stdout);
 			})
 		})
 	})
@@ -27,13 +27,17 @@ router.get('/', (ctx, next) => {
 	ctx.body = 'hello world';
 })
 
-router.get('/autopull/:sys', async(ctx, next) => {
-	let sysName = ctx.params.sys;
-	let data = await _exec(sysName);
+router.get('/autopull/:disk/:folder/:sys', async(ctx, next) => {
+	let sysName = ctx.params.sys,
+		folderName = ctx.params.folder,
+		diskName = ctx.params.disk;
+	let data = await _exec(diskName, folderName, sysName);
 	ctx.body = data;
 })
 
 app.use(router.routes())
    .use(router.allowedMethods());
 
-app.listen(9999);
+app.listen(9999, () => {
+	console.log('Server is running at port 9999!')
+});

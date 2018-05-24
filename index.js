@@ -29,11 +29,11 @@ const _exec = async (branch) => {
 		await deployStep(`git commit -m "test"`, 'git commit');
 		await deployStep('git push origin test', '发布');
 		await deployStep(`git checkout ${branch}`, `切换${branch}分支`);
-		updateRemote(project);
 	}catch(err) {
 		console.log(`\n${err}`);
 		process.exit();
 	}
+	updateRemote(project);
 }
 
 const deployStep = (step, stateMsg) => {
